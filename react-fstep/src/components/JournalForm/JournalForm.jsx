@@ -1,6 +1,7 @@
 import { useState } from "react";
-import "./JournalForm.css";
+import styles from "./JournalForm.module.css";
 import Button from "../Button/Button";
+// import cn from "classnames";
 
 // onSubmit - функция, которая приходит из App.jsx и которой мы пользуемся при работе с данным компонентом
 function JournalForm({ onSubmit }) {
@@ -18,6 +19,7 @@ function JournalForm({ onSubmit }) {
 
   function addJournalNote(event) {
     event.preventDefault();
+    // flag for controlling that state is actually valid/ not valid
     let isValid = true;
     const formData = new FormData(event.target);
     // Получаем с FormData со всеми данными формы js object, с которым в дальнейшем работаем
@@ -48,11 +50,44 @@ function JournalForm({ onSubmit }) {
   }
 
   return (
-    <form className="journal-form" onSubmit={addJournalNote}>
-      <input type="text" name="title" style={{border: formState.title ? undefined : "1px solid red"}}/>
-      <input type="date" name="date" style={{border: formState.date ? undefined : "1px solid red"}}/>
-      <input type="text" name="tag" id="" />
-      <textarea name="text" id="text-area" style={{border: formState.text ? undefined : "1px solid red"}}></textarea>
+    <form className={styles["journal-form"]} onSubmit={addJournalNote}>
+      <div>
+        <input
+          type="text"
+          name="title"
+          className={`${styles["input-title"]} ${
+            formState.title ? "" : styles["invalid"]
+          }`}
+        />
+      </div>
+      <div className={styles["date-row"]}>
+        <label for="date" className={styles["date-label"]}>
+          <img src="/calendar.svg" alt="Error while downloading" />
+          <span>Date</span>
+        </label>
+        <input
+          type="date"
+          name="date"
+          id="date"
+          className={`${styles["input"]} ${
+            formState.date ? "" : styles["invalid"]
+          }`}
+        />
+      </div>
+      <div className={styles["date-row"]}>
+        <label for="tag" className={styles["date-label"]}>
+          <img src="/folder.svg" alt="Error while downloading" />
+          <span>Tags</span>
+        </label>
+        <input type="text" name="tag" id="tag" className={styles["input"]} />
+      </div>
+      <textarea
+        name="text"
+        id="text-area"
+        className={`${styles["input"]} ${
+          formState.text ? "" : styles["invalid"]
+        }`}
+      ></textarea>
       <Button text="Save" />
     </form>
   );
